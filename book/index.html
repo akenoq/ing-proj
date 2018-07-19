@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+    <style>
+		
+        body {
+			margin-left: 15px;
+            margin-top: 25px;
+            background: #ffedf2;
+            font-size: 30px;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            text-align: center;
+			background-image: url("book.jpg");
+        }
+
+        .buttonClass {
+            outline: none;
+            background: #ff836f;
+            padding: 20px;
+            border: 2px solid #FF0000;
+            border-radius: 15px;
+            font-size: 20px;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+        }
+
+        .buttonClass:hover {
+            cursor: pointer;
+            background: #FF7F50;
+			padding: 30px;
+			margin-top: -20px;
+        }
+
+		h1 {
+			color: limegreen;
+		}
+
+		hr {
+			border-color: limegreen;
+			border-width: 5px;
+		}
+
+		.adding {
+			color: #ae07b3;
+
+		}
+
+		#addBtn {
+			background: #ae07b3;
+		}
+		#addBtn:hover {
+			margin-top: -20px;
+		}
+
+		.finding {
+			color: #33a900;
+		}
+
+		#findBtn {
+			background: #33a900;
+		}
+
+		#error {
+			color: #FF0000;
+		}
+
+    </style>
+</head>
+<body>
+
+	<h2>Телефонная книга</h2>
+	<div class="adding">
+		<h3>Добавить запись</h3>
+		<b>Имя</b>
+		<input id = "editA" type = "text">
+		<br>
+		<b>Телефон</b>
+		<input id = "editB" type = "text">
+		<br>
+		<br>
+
+		<button id = "addBtn" class = "buttonClass">Добавить</button>
+
+		<br>
+		<br>
+	</div>
+
+	<hr>
+
+	<div class="finding">
+		<h3>Найти запись</h3>
+		<b>Имя</b>
+		<input id = "editC" type = "text">
+		<br>
+		<br>
+
+		<button id = "findBtn" class = "buttonClass">Найти</button>
+	</div>
+
+	<h1 id="result"></h1>
+	<h1 id="error"></h1>
+
+	<script src = "code.js"></script>
+
+</body>
+</html>
