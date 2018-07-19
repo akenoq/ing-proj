@@ -71,6 +71,24 @@ window.onload = function () {
 			ris.fillStyle = '#FF0000';
 			ris.fill ();
 		}
+		
+		remove (){
+			this.y = 70 + this.line*40;
+			let t = road[this.line].length;
+			let i = 0;
+			let p =true;
+			while ((i<t)&&(p === true)){
+				if ((road[this.line][i].x<this.x)&&((road[this.line][i].x+road[this.line][i].size )>this.x)){
+					p =false; 
+					this.vec=1;
+				}
+				else {
+					this.vec = 0;
+				}
+				i++;
+			}
+			this.end = !p;
+		}
 	
 	}
 	
@@ -81,8 +99,22 @@ window.onload = function () {
 		road[i]=mash;
 	}
 	let ch = new chel ();
-	ch.draw ();
 	
+	window.onkeydown = function (event) {
+		let keyNumber = event.keyCode;
+		if ((keyNumber === 87)&&(ch.line < 5)){
+			if (ch.line === 4 ){
+				//res();
+			}
+			else {
+				ch.line++;
+			}
+		}
+		if ((keyNumber === 83)&&(ch.line > 0)) {
+			ch.line--;
+		}
+		ch.remove ();
+	}
 	
 	
 	function  redraw (){
@@ -113,6 +145,7 @@ window.onload = function () {
 				}				
 			}
 		}
+		ch.draw ();
 	}
 	
 	let timer = setInterval (redraw, 50);
