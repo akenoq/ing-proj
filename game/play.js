@@ -25,6 +25,12 @@ window.onload = function () {
 		scoreLabel.innerHTML = "Счет: "+ score;
 	}
 	
+	function GameEnd (){
+		if ((ch.end === false)&&(ch.line > -1)) {
+			end = false;
+		}
+	}
+	
 	class viec {
 		
 		constructor (line = 1, size = 40, vec = 1){
@@ -117,6 +123,8 @@ window.onload = function () {
 		road[i]=mash;
 	}
 	let ch = new chel ();
+	let end = true;
+	let pause = true;
 	
 	window.onkeydown = function (event) {
 		let keyNumber = event.keyCode;
@@ -134,36 +142,49 @@ window.onload = function () {
 		ch.remove ();
 	}
 	
+	pauseBtn.onclick = function () {
+		pause = !pause;
+		if (pause === false) {
+			holst.style.opacity = 0.5;
+		}
+		if (pause === true) {
+			holst.style.opacity = 1.0;
+		}
+		
+	}
+	
 	
 	function  redraw (){
-		ris.clearRect (0,0, 800, 800);
-		
-		for (let i=0; i<5; i++){
-			let t = road[i].length;
-			if ((i%2) === 0){
-					if (road[i][t-1].x>=50){
-						let size = 100;
-						road[i][t]= new viec (i, size, a);
+		GameEnd();
+		if ((pause)&&(end)){
+			ris.clearRect (0,0, 800, 800);
+			for (let i=0; i<5; i++){
+				let t = road[i].length;
+				if ((i%2) === 0){
+						if (road[i][t-1].x>=50){
+							let size = 100;
+							road[i][t]= new viec (i, size, a);
+						}
 					}
-				}
-				else {
-					if ((road[i][t-1].x+road[i][t-1].size)<=550){
-						let size = 100;
-						road[i][t]= new viec (i, size, a);
+					else {
+						if ((road[i][t-1].x+road[i][t-1].size)<=550){
+							let size = 100;
+							road[i][t]= new viec (i, size, a);
+						}
 					}
+				for (let j=0; j<t; j++){
+					if (road[i][j].del ()){
+						road[i].shift ();
+						j--;
+						t--;
+					} 
+					else {	
+						road[i][j].draw ();
+					}				
 				}
-			for (let j=0; j<t; j++){
-				if (road[i][j].del ()){
-					road[i].shift ();
-					j--;
-					t--;
-				} 
-				else {	
-					road[i][j].draw ();
-				}				
 			}
+			ch.draw ();
 		}
-		ch.draw ();
 	}
 	
 	let timer = setInterval (redraw, 50);
