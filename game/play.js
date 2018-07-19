@@ -50,12 +50,38 @@ window.onload = function () {
 		
 	}
 	
+	class chel {
+	
+		constructor (x =250, line = -1) {
+				this.x = x;
+				this.y = 70 + line*40;
+				this.line = line;
+				this.end = true;
+				this.vec = 0;
+		}
+		
+		draw () {
+			this.x = this.x + this.vec - 2*this.vec* (this.line%2);
+			if ((this.x<0)||(this.x>550)){
+				this.end = false;
+			}
+			ris.beginPath ();
+			ris.arc (this.x, this.y, 5, 0, 2*Math.PI, true);
+			ris.closePath ();
+			ris.fillStyle = '#FF0000';
+			ris.fill ();
+		}
+	
+	}
+	
 	let road = [];
 	for (let i=0; i<5; i++){
 		let mash = [];
 		mash[0]= new viec (i, 40, 1);
 		road[i]=mash;
 	}
+	let ch = new chel ();
+	ch.draw ();
 	
 	
 	
