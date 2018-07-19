@@ -7,6 +7,24 @@ window.onload = function () {
 	let holst = document.getElementById ("holst");
 	let ris = holst.getContext ('2d');
 	
+	let score = 0;
+	let a = 1;
+	function res () {
+		score+=a;
+		a++;
+		ch.x = 250;
+		ch.y = 30 ;
+		ch.line = -1;
+		ch.vec =0;
+		road = [];
+		for (let i = 0; i<5; i++){
+			let mash=[];
+			mash[0] = new viec (i,40,a);
+			road[i]=mash;
+		}
+		scoreLabel.innerHTML = "Счет: "+ score;
+	}
+	
 	class viec {
 		
 		constructor (line = 1, size = 40, vec = 1){
@@ -80,7 +98,7 @@ window.onload = function () {
 			while ((i<t)&&(p === true)){
 				if ((road[this.line][i].x<this.x)&&((road[this.line][i].x+road[this.line][i].size )>this.x)){
 					p =false; 
-					this.vec=1;
+					this.vec=a;
 				}
 				else {
 					this.vec = 0;
@@ -104,7 +122,7 @@ window.onload = function () {
 		let keyNumber = event.keyCode;
 		if ((keyNumber === 87)&&(ch.line < 5)){
 			if (ch.line === 4 ){
-				//res();
+				res();
 			}
 			else {
 				ch.line++;
@@ -125,13 +143,13 @@ window.onload = function () {
 			if ((i%2) === 0){
 					if (road[i][t-1].x>=50){
 						let size = 100;
-						road[i][t]= new viec (i, size, 1);
+						road[i][t]= new viec (i, size, a);
 					}
 				}
 				else {
 					if ((road[i][t-1].x+road[i][t-1].size)<=550){
 						let size = 100;
-						road[i][t]= new viec (i, size, 1);
+						road[i][t]= new viec (i, size, a);
 					}
 				}
 			for (let j=0; j<t; j++){
