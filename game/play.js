@@ -4,6 +4,7 @@ window.onload = function () {
 
 	let scoreLabel = document.getElementById ("scoreLabel");
 	let  pauseBtn = document.getElementById ("pauseBtn");
+	let  startBtn = document.getElementById ("startBtn");
 	let holst = document.getElementById ("holst");
 	let ris = holst.getContext ('2d');
 	
@@ -151,6 +152,14 @@ window.onload = function () {
 			holst.style.opacity = 1.0;
 		}
 		
+	}
+	
+	startBtn.onclick = function () {
+		a=0;
+		res ();
+		score = 0;
+		scoreLabel.innerHTML = "Счет: " + score;
+		end=true;
 	}
 	
 	
