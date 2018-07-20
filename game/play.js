@@ -33,6 +33,9 @@ window.onload = function () {
 	function GameEnd (){
 		if ((ch.end === false)&&(ch.line > -1)) {
 			end = false;
+			scoreLabel.innerHTML = "Игра окончена! Рекорд: " + score;
+			let t = localStorage.length;
+			localStorage.setItem (t, score);
 		}
 	}
 	
@@ -123,6 +126,7 @@ window.onload = function () {
 				if ((road[this.line][i].x<this.x)&&((road[this.line][i].x+road[this.line][i].size )>this.x)){
 					p =false; 
 					this.vec=a;
+					score+=road[this.line][i].bon;
 				}
 				else {
 					this.vec = 0;
@@ -130,6 +134,8 @@ window.onload = function () {
 				i++;
 			}
 			this.end = !p;
+			scoreLabel.innerHTML = "Счет: "+score;
+			GameEnd();
 		}
 	
 	}
@@ -181,7 +187,6 @@ window.onload = function () {
 	
 	
 	function  redraw (){
-		GameEnd();
 		if ((pause)&&(end)){
 			ris.clearRect (0,0, 800, 800);
 			for (let i=0; i<5; i++){
