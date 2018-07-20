@@ -8,6 +8,10 @@ window.onload = function () {
 	let holst = document.getElementById ("holst");
 	let ris = holst.getContext ('2d');
 	
+	function RandomNumber (min=0, max=1000) {
+		return Math.random()*(max-min)+min;
+	}
+	
 	let score = 0;
 	let a = 1;
 	function res () {
@@ -46,10 +50,23 @@ window.onload = function () {
 				this.y=100 + (line-1)*40;
 				this.line = line;
 				this.size = size;
+				let t = parseInt(RandomNumber (0, 100));
+				t-=98;
+				if (t<0){
+					t=0;
+				}
+				this.bon = t;
 		}
 		
 		draw () {
 			ris.fillStyle = '#000000';
+			if (this.bon === 1){
+				ris.fillStyle = '#871693';
+			} else {
+				if (this.bon === 2){
+					ris.fillStyle = '#d3d017';
+				}
+			}
 			ris.fillRect (this.x, this.y , this.size, 20);
 			this.x+=this.vec;
 		}
@@ -171,13 +188,13 @@ window.onload = function () {
 				let t = road[i].length;
 				if ((i%2) === 0){
 						if (road[i][t-1].x>=50){
-							let size = 100;
+							let size = parseInt(RandomNumber (20,60));
 							road[i][t]= new viec (i, size, a);
 						}
 					}
 					else {
 						if ((road[i][t-1].x+road[i][t-1].size)<=550){
-							let size = 100;
+							let size =  parseInt(RandomNumber (20,60));
 							road[i][t]= new viec (i, size, a);
 						}
 					}
