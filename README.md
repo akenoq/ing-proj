@@ -40,3 +40,5 @@ https://learn.javascript.ru/ (выбираем Основы JavaScript, глав
 
 
 ### Ссылка на бибилиотеку https://github.com/mrdoob/three.js/archive/master.zip
+
+Документация на библиотеку https://threejs.org/docs/index.html#manual/introduction/Creating-a-scene
