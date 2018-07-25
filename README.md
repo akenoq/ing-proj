@@ -38,6 +38,23 @@ https://learn.javascript.ru/ (выбираем Основы JavaScript, глав
 
 2) Добавить возможность двигать камеру по нажатию на клавиши. По аналогии с предыдущим занятием.
 
+### ДЗ 3 
+
+Создать на сцене противников при помощи фунции createCube. Попробовать задавать им случайные цвета и положение с использованием функций рандома. 
+Возвращает случаное число в диапозоне от min до max.
+
+	function getRandomNumber (min,max){
+		return parseInt(Math.random()*(max-min)+min);
+	}
+	
+Возвращает один из пяти цветов в массиве arr.
+
+	function getRandomColor(){
+		const arr = ["#c95014","#204906","#026d52","#0b2054","#b50534"];
+		const number = parseInt(Math.random() * 10000) % 5;
+		return arr[number];
+	}
+
 
 ### Ссылка на бибилиотеку https://github.com/mrdoob/three.js/archive/master.zip
 
