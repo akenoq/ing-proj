@@ -8,6 +8,23 @@ let scene = new THREE.Scene ();
 let camera = new THREE.PerspectiveCamera (45, ww/hh, 0.1, 1000);
 let renderer = new THREE.WebGLRenderer ();	
 
+function createCube (hh=20, xx=0, zz=0, d=true){
+		//let cubeColor = getRandomColor();
+		//if (d){
+			let cubeColor = "#9b42f4";
+		//}
+		let cubeGeometry = new THREE.CubeGeometry  (hh,hh,hh);
+		let cubeMaterial = new THREE.MeshLambertMaterial({color: cubeColor});
+		let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+		//cube.castShadow = true;
+		cube.position.x = xx;
+		cube.position.y = hh/2;
+		cube.position.z = zz;
+		scene.add (cube);
+		
+		obj.push (cube);
+	}
+let obj = [];
 let plane;
 function start () {
 	renderer.setClearColor ("#67ddff");
@@ -38,7 +55,7 @@ scene.add (gridHelper);
 let axes = new THREE.AxisHelper(200);
 scene.add(axes);
 
-
+createCube ();
 renderer.render (scene, camera);
 	
 });
