@@ -66,12 +66,25 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	
 	function frameLogic () {
 		MovePlayer ();
+		cameraFollow ();
 		
 	}
 	
 	let timerDrawer;
 	let timerLogic;
 	
+	function cameraFollow () {
+		let dX=obj[0].position.x-camera.position.x;
+		let dZ=obj[0].position.z-camera.position.z;
+		let dc = Math.sqrt (dX*dX+dZ*dZ);
+		if (dc>70) {
+			camera.position.x+=parseInt (dX*3/(2*dc)) ;
+			camera.position.z+=parseInt (dZ*3/(2*dc)) ;
+			pointLightA.position.set (camera.position.x-20, 200, camera.position.z-20);
+		}
+		camera.lookAt (obj[0].position);
+		camera.rotation.z = 3*Math.PI/2;
+	}
 	
 	function MovePlayer () {
 		if(w) {
