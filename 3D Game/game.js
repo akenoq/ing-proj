@@ -24,6 +24,20 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		
 		obj.push (cube);
 	}
+	
+	let pointLightA;
+	function EnableLight (){
+		pointLightA = new THREE.PointLight( "#FFFFFF", 2);
+		
+		pointLightA.position.set( -20, 200, -20 );
+		
+		scene.add(pointLightA);
+	
+		renderer.shadowMap.enabled = true;
+		pointLightA.castShadow = true;
+	
+	}
+	
 let obj = [];
 let plane;
 function start () {
@@ -36,7 +50,7 @@ function start () {
 	camera.rotation.x = - Math.PI/4;
 	camera.rotation.y =Math.PI/4;
 	camera.rotation.z =0;
-	
+	EnableLight ();
 	let planeGeometry = new THREE.PlaneGeometry (350, 400,1 , 10);
 	let planeMaterial = new THREE.MeshBasicMaterial ({color: 0x00ff00});
 	plane =new THREE.Mesh(planeGeometry, planeMaterial);
