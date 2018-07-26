@@ -19,7 +19,7 @@ let renderer = new THREE.WebGLRenderer ();
 		return arr[number];
 	}
 	
-	let EnemyOnMap =30;
+	let EnemyOnMap =4;
 	let ViewDistance =400;
 	function Population () {
 		let t = obj.length;
@@ -140,7 +140,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		camera.rotation.z = 3*Math.PI/2;
 	}
 	
-	let PlayerSpeed =1;
+	let PlayerSpeed =3;
 	let speedBoost;
 	let PlayerMagnet = false;
 	let magnetBoost;
@@ -163,11 +163,11 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 					PlayerSpeed = 5;
 					objProperties[i].speed = false;
 					speedBoost=setInterval(function (){
-						PlayerSpeed=1;
+						PlayerSpeed=3;
 						clearInterval (speedBoost);}, 5000);
 				
 				
-				}
+				} else{
 				if (objProperties[i].magnet) {
 					PlayerMagnet = true;
 					objProperties[i].magnet = false;
@@ -176,9 +176,9 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 						clearInterval (magnetBoost);}, 5000);
 				
 				
-				}
+				}}
 				objProperties.splice(i, 1);
-				//scoreLabel.innerHTML = score;
+				scoreLabel.innerHTML = score;
 			}
 		}
 	}
@@ -200,6 +200,18 @@ function createCube (hh=20, xx=0, zz=0, d=true){
             obj[0].position.z+=PlayerSpeed;
 			plane.position.z+= PlayerSpeed;
         }
+		if (PlayerMagnet){
+			let t = obj.length;
+			let PlayerPos = obj[0].position;
+			for (let i = 1; i<t; i++){
+				let CubePos = obj[i].position;
+				let dx = PlayerPos.x-CubePos.x;
+				let dz = PlayerPos.z-CubePos.z;
+				let dc = Math.sqrt (dx*dx+dz*dz);
+				CubePos.x += parseInt(dx*2/dc);
+				CubePos.z += parseInt(dz*3/dc);
+			}
+		}
 	}
 	
 	let pointLightA;
@@ -222,7 +234,7 @@ function start () {
 	renderer.setSize (ww,hh);
 	document.getElementById("holst").append(renderer.domElement);
 	camera.position.x = 0 ;
-	camera.position.y =300;
+	camera.position.y =900;
 	camera.position.z =0;
 	camera.rotation.x = - Math.PI/2;
 	camera.rotation.y =0;
