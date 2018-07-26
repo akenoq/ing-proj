@@ -19,6 +19,36 @@ let renderer = new THREE.WebGLRenderer ();
 		return arr[number];
 	}
 	
+	let walls=[];
+	function createWall (xx=0, zz= 0, rot = 0) {
+		let wallColor = "#cccccc";
+		let wallGeometry = new THREE.CubeGeometry  (8,50,100);
+		let wallMaterial = new THREE.MeshLambertMaterial({color: wallColor});
+		let wall = new THREE.Mesh(wallGeometry, wallMaterial);
+		wall.castShadow = true;
+		wall.position.x = xx;
+		wall.position.y = 25;
+		wall.position.z = zz;
+		wall.rotation.y = Math.PI/2*(rot);
+		wall.receiveShadow = true;
+		scene.add (wall);
+		walls.push (wall);
+	}
+	
+	function TryTo (xx, zz){
+		let t = walls.length;
+		for (let i = 0; i<t ; i++){
+			let rot =parseInt(walls[i].rotation.y/(Math.PI/2));
+			
+			let dx = Math.abs(xx-walls[i].position.x);
+			let dz = Math.abs(zz-walls[i].position.z);
+if ((dx<=(4*Math.abs(rot-1)+50*rot+10)) && (dz<=(50*Math.abs(rot-1)+4*rot)+10)){
+				return false;
+			}	
+		}
+		return true;
+	}
+	
 	let EnemyOnMap =4;
 	let ViewDistance =400;
 	function Population () {
@@ -184,22 +214,32 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	}
 	
 	function MovePlayer () {
+		let tryposX = obj[0].position.x;
+		let tryposZ = obj[0].position.z;
 		if(w) {
-            obj[0].position.x+=PlayerSpeed;
-			plane.position.x+= PlayerSpeed;
+            tryposX+=PlayerSpeed;
         }
         if(s) {
-            obj[0].position.x-=PlayerSpeed;
-			plane.position.x-= PlayerSpeed;
+            tryposX-=PlayerSpeed;
         }
+		if	(TryTo (tryposX, tryposZ)) {
+			obj[0].position.x=tryposX;
+			obj[0].position.z=tryposZ;
+			plane.position.x=tryposX;
+			plane.position.z=tryposZ;
+		}
 		if(a) {
-            obj[0].position.z-=PlayerSpeed;
-			plane.position.z-= PlayerSpeed;
+			tryposZ-=PlayerSpeed;
         }
         if(d) {
-            obj[0].position.z+=PlayerSpeed;
-			plane.position.z+= PlayerSpeed;
+			tryposZ+= PlayerSpeed;
         }
+		if	(TryTo (tryposX, tryposZ)) {
+			obj[0].position.x=tryposX;
+			obj[0].position.z=tryposZ;
+			plane.position.x=tryposX;
+			plane.position.z=tryposZ;
+		}
 		if (PlayerMagnet){
 			let t = obj.length;
 			let PlayerPos = obj[0].position;
@@ -212,6 +252,8 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				CubePos.z += parseInt(dz*3/dc);
 			}
 		}
+		
+		
 	}
 	
 	let pointLightA;
@@ -261,7 +303,7 @@ let axes = new THREE.AxisHelper(200);
 scene.add(axes);
 
 createCube (20, 0, 0 , true);
-createCube (6, 10,10 , false);
+createWall (50,50, 1);
 renderer.render (scene, camera);
 	
 });
