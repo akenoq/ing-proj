@@ -276,7 +276,7 @@ function start () {
 	renderer.setSize (ww,hh);
 	document.getElementById("holst").append(renderer.domElement);
 	camera.position.x = 0 ;
-	camera.position.y =900;
+	camera.position.y =300;
 	camera.position.z =0;
 	camera.rotation.x = - Math.PI/2;
 	camera.rotation.y =0;
