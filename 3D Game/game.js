@@ -1,18 +1,17 @@
 "use strict";
 
 window.addEventListener("load", function () {
-const ww = 800;
-const hh = 600;
+	const ww = 800;
+	const hh = 600;
 
-let scene = new THREE.Scene ();
-let camera = new THREE.PerspectiveCamera (45, ww/hh, 0.1, 1000);
-let renderer = new THREE.WebGLRenderer ();	
+	let scene = new THREE.Scene ();
+	let camera = new THREE.PerspectiveCamera (45, ww/hh, 0.1, 1000);
+	let renderer = new THREE.WebGLRenderer ();	
 
 	function getRandomNumber (min,max){
 		return parseInt(Math.random()*(max-min)+min);
 	}
 
-	
 	function getRandomColor(){
 		const arr = ["#c95014","#204906","#026d52","#0b2054","#b50534"];
 		const number = parseInt(Math.random() * 10000) % 5;
@@ -39,10 +38,9 @@ let renderer = new THREE.WebGLRenderer ();
 		let t = walls.length;
 		for (let i = 0; i<t ; i++){
 			let rot =parseInt(walls[i].rotation.y/(Math.PI/2));
-			
 			let dx = Math.abs(xx-walls[i].position.x);
 			let dz = Math.abs(zz-walls[i].position.z);
-if ((dx<=(4*Math.abs(rot-1)+50*rot+size)) && (dz<=(50*Math.abs(rot-1)+4*rot)+size)){
+			if ((dx<=(4*Math.abs(rot-1)+50*rot+size)) && (dz<=(50*Math.abs(rot-1)+4*rot)+size)){
 				return false;
 			}	
 		}
@@ -67,7 +65,6 @@ if ((dx<=(4*Math.abs(rot-1)+50*rot+size)) && (dz<=(50*Math.abs(rot-1)+4*rot)+siz
 				console.log (objProperties.length, obj.length, 67);
 			}
 		}
-		
 		for (let i = 0; i< (EnemyOnMap-t+1); i++) {
 			let xx = getRandomNumber (PlayerPos.x-300, PlayerPos.x+300);
 			let zz = getRandomNumber (PlayerPos.z-300, PlayerPos.z+300);
@@ -76,7 +73,7 @@ if ((dx<=(4*Math.abs(rot-1)+50*rot+size)) && (dz<=(50*Math.abs(rot-1)+4*rot)+siz
 		}
 	}
 	
-function createCube (hh=20, xx=0, zz=0, d=true){
+	function createCube (hh=20, xx=0, zz=0, d=true){
 		let n = parseInt(Math.random()*100)%5;
 		let  cubeColor = "#FF0000";
 		let sc;
@@ -105,7 +102,8 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		if (TryTo(xx, zz, 3)){
 			scene.add (cube);
 			if (d === false){
-			objProperties.push(bon);}
+				objProperties.push(bon);
+			}
 			obj.push (cube);
 		}
 	}
@@ -181,7 +179,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	let PlayerMagnet = false;
 	let magnetBoost;
 	let score =100;
-		function Score() {
+	function Score() {
 		let t = objProperties.length;
 		let PlayerPos = obj[0].position;
 		for (let i = 0; i<t; i++){
@@ -189,28 +187,25 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 			let dx = Math.abs(PlayerPos.x-CubePos.x);
 			let dz = Math.abs(PlayerPos.z-CubePos.z);
 			if (dx<13 && dz<13){
-				
 				score+=objProperties[i].score;
 				if (objProperties[i].speed) {
 					PlayerSpeed = 5;
 					objProperties[i].speed = false;
 					clearInterval (speedBoost);
 					speedBoost=setInterval(function (){
-						PlayerSpeed=3;
-						clearInterval (speedBoost);}, 5000);
-				
-				
+							PlayerSpeed=3;
+							clearInterval (speedBoost);
+						}, 5000);
 				} else{
-				if (objProperties[i].magnet) {
-					PlayerMagnet = true;
-					objProperties[i].magnet = false;
-					clearInterval (magnetBoost);
-					magnetBoost=setInterval(function (){
-						PlayerMagnet=false;
-						clearInterval (magnetBoost);}, 5000);
-				
-				
-				}}
+					if (objProperties[i].magnet) {
+						PlayerMagnet = true;
+						objProperties[i].magnet = false;
+						clearInterval (magnetBoost);
+						magnetBoost=setInterval(function (){
+							PlayerMagnet=false;
+							clearInterval (magnetBoost);}, 5000);
+					}
+				}
 				console.log (objProperties[i]);
 				objProperties.splice(i, 1);
 				scene.remove (obj[i+1]);
@@ -270,59 +265,54 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				}
 			}
 		}
-		
-		
 	}
 	
 	let pointLightA;
 	function EnableLight (){
 		pointLightA = new THREE.PointLight( "#FFFFFF", 2);
-		
-		pointLightA.position.set( 20, 200, 20 );
-		
+		pointLightA.position.set( -20, 200, -20 );
 		scene.add(pointLightA);
-	
 		renderer.shadowMap.enabled = true;
 		pointLightA.castShadow = true;
-	
 	}
 	
-let obj = [];
-let plane;
-function start () {
-	renderer.setClearColor ("#67ddff");
-	renderer.setSize (ww,hh);
-	document.getElementById("holst").append(renderer.domElement);
-	camera.position.x = 0 ;
-	camera.position.y =300;
-	camera.position.z =0;
-	camera.rotation.x = - Math.PI/2;
-	camera.rotation.y =0;
-	camera.rotation.z =3*Math.PI/2;
-	EnableLight ();
-	let planeGeometry = new THREE.PlaneGeometry (350, 400,1 , 10);
-	let planeMaterial = new THREE.MeshBasicMaterial ({color: 0x00ff00});
-	plane =new THREE.Mesh(planeGeometry, planeMaterial);
-	plane.rotation.x = -Math.PI/2;
-	plane.position.x = 0;
-	plane.position.y= 0;
-	plane.position.z= 0;
-	scene.add (plane);
-	timerDrawer = setInterval (frameDrawer, 20);
-	timerLogic = setInterval (frameLogic, 20);
-}
-	
-start();
+	let obj = [];
+	let plane;
+	function start () {
+		renderer.setClearColor ("#67ddff");
+		renderer.setSize (ww,hh);
+		document.getElementById("holst").append(renderer.domElement);
+		camera.position.x = 0 ;
+		camera.position.y =300;
+		camera.position.z =0;
+		camera.rotation.x = - Math.PI/2;
+		camera.rotation.y =0;
+		camera.rotation.z =3*Math.PI/2;
+		EnableLight ();
+		let planeGeometry = new THREE.PlaneGeometry (350, 400,1 , 10);
+		let planeMaterial = new THREE.MeshLambertMaterial ({color: 0x00ff00});
+		plane =new THREE.Mesh(planeGeometry, planeMaterial);
+		plane.rotation.x = -Math.PI/2;
+		plane.position.x = 0;
+		plane.position.y= 0;
+		plane.position.z= 0;
+		plane.receiveShadow = true;
+		scene.add (plane);
+		timerDrawer = setInterval (frameDrawer, 20);
+		timerLogic = setInterval (frameLogic, 20);
+	}
+		
+	start();
 
-let gridHelper = new THREE.GridHelper (100, 10, "#ff0000","#ff0000");
-scene.add (gridHelper);
+	let gridHelper = new THREE.GridHelper (100, 10, "#ff0000","#ff0000");
+	scene.add (gridHelper);
 
-let axes = new THREE.AxisHelper(200);
-scene.add(axes);
+	let axes = new THREE.AxisHelper(200);
+	scene.add(axes);
 
-createCube (20, 0, 0 , true);
-createWall (50,50, 1);
-createWall (100,100, 0)
-renderer.render (scene, camera);
+	createCube (20, 0, 0 , true);
+	createWall (50,50, 1);
+	createWall (100,100, 0)
+	renderer.render (scene, camera);
 	
 });
