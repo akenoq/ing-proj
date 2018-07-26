@@ -56,7 +56,21 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		cube.position.y = hh/2;
 		cube.position.z = zz;
 		scene.add (cube);
-		
+		let n = parseInt(Math.random()*100)%5;
+		let sc;
+		sc=0;
+		let sp = false;
+		let mag = false;
+		if (n === 1) sc = 1;
+		if (n === 2) sc = -1;
+		if (n === 3) sp = true;
+		if (n === 4) mag = true;
+		let bon = {
+			score: sc,
+			magnet: mag,
+			speed: sp
+		}
+		objProperties.push(bon);
 		obj.push (cube);
 	}
 	
@@ -108,21 +122,24 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	
 	let timerDrawer;
 	let timerLogic;
+	let scoreLabel = document.getElementById ("lbl");
+	let objProperties = [];
 	
 	function cameraFollow () {
 		let dX=obj[0].position.x-camera.position.x;
 		let dZ=obj[0].position.z-camera.position.z;
 		let dc = Math.sqrt (dX*dX+dZ*dZ);
 		if (dc>70) {
-			camera.position.x+=parseInt (dX*3/(2*dc)) ;
-			camera.position.z+=parseInt (dZ*3/(2*dc)) ;
+			camera.position.x+=parseInt (dX*3*PlayerSpeed/(2*dc)) ;
+			camera.position.z+=parseInt (dZ*3*PlayerSpeed/(2*dc)) ;
 			pointLightA.position.set (camera.position.x-20, 200, camera.position.z-20);
 		}
 		camera.lookAt (obj[0].position);
 		camera.rotation.z = 3*Math.PI/2;
 	}
 	
-	
+	let PlayerSpeed =1;
+	let speedBoost;
 	let score =100;
 		function Score() {
 		let t = obj.length;
@@ -136,28 +153,36 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				obj.splice (i, 1);
 				t--;
 				i--;
-				score+=2;
-				scoreEdit.innerHTML = score;
+				score+=objProperties[i].score;
+				if (objProperties[i].speed) {
+					PlayerSpeed = 5;
+					objProperties[i].speed = false;
+					speedBoost=setInterval(function (){
+						PlayerSpeed=1;
+						clearInterval (speedBoost);}, 5000);
+				objProperties.splice(i, 1);
+				scoreLabel.innerHTML = score;
+				}
 			}
 		}
 	}
 	
 	function MovePlayer () {
 		if(w) {
-            obj[0].position.x+=1;
-			plane.position.x+= 1;
+            obj[0].position.x+=PlayerSpeed;
+			plane.position.x+= PlayerSpeed;
         }
         if(s) {
-            obj[0].position.x-=1;
-			plane.position.x-= 1;
+            obj[0].position.x-=PlayerSpeed;
+			plane.position.x-= PlayerSpeed;
         }
 		if(a) {
-            obj[0].position.z-=1;
-			plane.position.z-= 1;
+            obj[0].position.z-=PlayerSpeed;
+			plane.position.z-= PlayerSpeed;
         }
         if(d) {
-            obj[0].position.z+=1;
-			plane.position.z+= 1;
+            obj[0].position.z+=PlayerSpeed;
+			plane.position.z+= PlayerSpeed;
         }
 	}
 	
