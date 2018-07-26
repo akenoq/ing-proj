@@ -8,11 +8,33 @@ let scene = new THREE.Scene ();
 let camera = new THREE.PerspectiveCamera (45, ww/hh, 0.1, 1000);
 let renderer = new THREE.WebGLRenderer ();	
 
+	function getRandomNumber (min,max){
+		return parseInt(Math.random()*(max-min)+min);
+	}
+
+	
+	function getRandomColor(){
+		const arr = ["#c95014","#204906","#026d52","#0b2054","#b50534"];
+		const number = parseInt(Math.random() * 10000) % 5;
+		return arr[number];
+	}
+	
+	let EnemyOnMap =30;
+	function Population () {
+		let t = obj.length;
+		let PlayerPos = obj[0].position;
+		for (let i = 0; i< (EnemyOnMap-t+1); i++) {
+			let xx = getRandomNumber (PlayerPos.x-300, PlayerPos.x+300);
+			let zz = getRandomNumber (PlayerPos.z-300, PlayerPos.z+300);
+			createCube (6, xx, zz, false);
+		}
+	}
+	
 function createCube (hh=20, xx=0, zz=0, d=true){
-		//let cubeColor = getRandomColor();
-		//if (d){
-			let cubeColor = "#9b42f4";
-		//}
+		let cubeColor = getRandomColor();
+		if (d === true){
+			cubeColor = "#9b42f4";
+		}
 		let cubeGeometry = new THREE.CubeGeometry  (hh,hh,hh);
 		let cubeMaterial = new THREE.MeshLambertMaterial({color: cubeColor});
 		let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
@@ -67,7 +89,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	function frameLogic () {
 		MovePlayer ();
 		cameraFollow ();
-		
+		Population();
 	}
 	
 	let timerDrawer;
@@ -151,7 +173,8 @@ scene.add (gridHelper);
 let axes = new THREE.AxisHelper(200);
 scene.add(axes);
 
-createCube ();
+createCube (20, 0, 0 , true);
+createCube (6, 10,10 , false);
 renderer.render (scene, camera);
 	
 });
