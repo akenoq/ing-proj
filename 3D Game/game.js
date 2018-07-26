@@ -42,7 +42,7 @@ let renderer = new THREE.WebGLRenderer ();
 			
 			let dx = Math.abs(xx-walls[i].position.x);
 			let dz = Math.abs(zz-walls[i].position.z);
-if ((dx<=(4*Math.abs(rot-1)+50*rot+size-1)) && (dz<=(50*Math.abs(rot-1)+4*rot)+size-1)){
+if ((dx<=(4*Math.abs(rot-1)+50*rot+size)) && (dz<=(50*Math.abs(rot-1)+4*rot)+size)){
 				return false;
 			}	
 		}
@@ -172,7 +172,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		camera.rotation.z = 3*Math.PI/2;
 	}
 	
-	let PlayerSpeed =3;
+	let PlayerSpeed =1;
 	let speedBoost;
 	let PlayerMagnet = false;
 	let magnetBoost;
@@ -250,8 +250,8 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				let dx = PlayerPos.x-CubePos.x;
 				let dz = PlayerPos.z-CubePos.z;
 				let dc = Math.sqrt (dx*dx+dz*dz);
-				CubePos.x += parseInt(dx*3/dc);
-				CubePos.z += parseInt(dz*3/dc);
+				CubePos.x += dx/Math.abs(dx);
+				CubePos.z += dz/Math.abs(dz);
 			}
 		}
 		
