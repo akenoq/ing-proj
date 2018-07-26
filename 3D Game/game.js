@@ -250,8 +250,17 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				let dx = PlayerPos.x-CubePos.x;
 				let dz = PlayerPos.z-CubePos.z;
 				let dc = Math.sqrt (dx*dx+dz*dz);
-				CubePos.x += dx/Math.abs(dx);
-				CubePos.z += dz/Math.abs(dz);
+				let tx = CubePos.x;
+				let tz = CubePos.z;
+				tx += parseInt (dx*3/dc);
+				if (TryTo (tx,tz, 3)){
+					CubePos.x = tx;
+				}
+				tx -= parseInt (dx*3/dc);
+				tz += parseInt (dz*3/dc);
+				if (TryTo (tx,tz, 3)){
+					CubePos.z = tz;
+				}
 			}
 		}
 		
@@ -306,6 +315,7 @@ scene.add(axes);
 
 createCube (20, 0, 0 , true);
 createWall (50,50, 1);
+createWall (100,100, 0)
 renderer.render (scene, camera);
 	
 });
