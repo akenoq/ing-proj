@@ -20,9 +20,22 @@ let renderer = new THREE.WebGLRenderer ();
 	}
 	
 	let EnemyOnMap =30;
+	let ViewDistance =400;
 	function Population () {
 		let t = obj.length;
 		let PlayerPos = obj[0].position;
+		for (let i = 1; i<t; i++){
+			let CubePos = obj[i].position;
+			let dx = Math.abs(PlayerPos.x-CubePos.x);
+			let dz = Math.abs(PlayerPos.z-CubePos.z);
+			if (dx>ViewDistance || dz>ViewDistance){
+				scene.remove (obj[i]);
+				obj.splice (i, 1);
+				t--;
+				i--;
+			}
+		}
+		
 		for (let i = 0; i< (EnemyOnMap-t+1); i++) {
 			let xx = getRandomNumber (PlayerPos.x-300, PlayerPos.x+300);
 			let zz = getRandomNumber (PlayerPos.z-300, PlayerPos.z+300);
@@ -147,7 +160,7 @@ function start () {
 	renderer.setSize (ww,hh);
 	document.getElementById("holst").append(renderer.domElement);
 	camera.position.x = 0 ;
-	camera.position.y =200;
+	camera.position.y =900;
 	camera.position.z =0;
 	camera.rotation.x = - Math.PI/2;
 	camera.rotation.y =0;
