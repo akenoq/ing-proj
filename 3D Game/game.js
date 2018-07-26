@@ -61,7 +61,7 @@ if ((dx<=(4*Math.abs(rot-1)+50*rot+size)) && (dz<=(50*Math.abs(rot-1)+4*rot)+siz
 			if (dx>ViewDistance || dz>ViewDistance){
 				scene.remove (obj[i]);
 				obj.splice (i, 1);
-				objProperties.splice (i,1);
+				objProperties.splice (i-1,1);
 				t--;
 				i--;
 				console.log (objProperties.length, obj.length, 67);
