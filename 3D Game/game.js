@@ -44,7 +44,21 @@ let renderer = new THREE.WebGLRenderer ();
 	}
 	
 function createCube (hh=20, xx=0, zz=0, d=true){
-		let cubeColor = getRandomColor();
+		let n = parseInt(Math.random()*100)%5;
+		let  cubeColor = "#b50534";
+		let sc;
+		sc=0;
+		let sp = false;
+		let mag = false;
+		if (n === 1) {cubeColor = "#c95014"; sc = 1;}
+		if (n === 2) {cubeColor = "#000000"; sc = -1;}
+		if (n === 3) {cubeColor = "#204906";sp = true;}
+		if (n === 4) {cubeColor = "#026d52";mag = true;}
+		let bon = {
+			score: sc,
+			magnet: mag,
+			speed: sp
+		}
 		if (d === true){
 			cubeColor = "#9b42f4";
 		}
@@ -56,20 +70,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		cube.position.y = hh/2;
 		cube.position.z = zz;
 		scene.add (cube);
-		let n = parseInt(Math.random()*100)%5;
-		let sc;
-		sc=0;
-		let sp = false;
-		let mag = false;
-		if (n === 1) sc = 1;
-		if (n === 2) sc = -1;
-		if (n === 3) sp = true;
-		if (n === 4) mag = true;
-		let bon = {
-			score: sc,
-			magnet: mag,
-			speed: sp
-		}
+		
 		objProperties.push(bon);
 		obj.push (cube);
 	}
@@ -161,8 +162,9 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 						PlayerSpeed=1;
 						clearInterval (speedBoost);}, 5000);
 				objProperties.splice(i, 1);
-				scoreLabel.innerHTML = score;
+				
 				}
+				scoreLabel.innerHTML = score;
 			}
 		}
 	}
