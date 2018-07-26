@@ -31,6 +31,7 @@ let renderer = new THREE.WebGLRenderer ();
 			if (dx>ViewDistance || dz>ViewDistance){
 				scene.remove (obj[i]);
 				obj.splice (i, 1);
+				objProperties.splice (i,1);
 				t--;
 				i--;
 			}
@@ -45,15 +46,15 @@ let renderer = new THREE.WebGLRenderer ();
 	
 function createCube (hh=20, xx=0, zz=0, d=true){
 		let n = parseInt(Math.random()*100)%5;
-		let  cubeColor = "#b50534";
+		let  cubeColor = "#FF0000";
 		let sc;
 		sc=0;
 		let sp = false;
 		let mag = false;
 		if (n === 1) {cubeColor = "#c95014"; sc = 1;}
 		if (n === 2) {cubeColor = "#000000"; sc = -1;}
-		if (n === 3) {cubeColor = "#204906";sp = true;}
-		if (n === 4) {cubeColor = "#026d52";mag = true;}
+		if (n === 3) {cubeColor = "#cbf442";sp = true;}
+		if (n === 4) {cubeColor = "#4147f4";mag = true;}
 		let bon = {
 			score: sc,
 			magnet: mag,
@@ -70,8 +71,8 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		cube.position.y = hh/2;
 		cube.position.z = zz;
 		scene.add (cube);
-		
-		objProperties.push(bon);
+		if (d === false){
+		objProperties.push(bon);}
 		obj.push (cube);
 	}
 	
@@ -141,6 +142,8 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	
 	let PlayerSpeed =1;
 	let speedBoost;
+	let PlayerMagnet = false;
+	let magnetBoost;
 	let score =100;
 		function Score() {
 		let t = obj.length;
@@ -154,6 +157,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				obj.splice (i, 1);
 				t--;
 				i--;
+				console.log (objProperties[i]);
 				score+=objProperties[i].score;
 				if (objProperties[i].speed) {
 					PlayerSpeed = 5;
@@ -161,10 +165,20 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 					speedBoost=setInterval(function (){
 						PlayerSpeed=1;
 						clearInterval (speedBoost);}, 5000);
-				objProperties.splice(i, 1);
+				
 				
 				}
-				scoreLabel.innerHTML = score;
+				if (objProperties[i].magnet) {
+					PlayerMagnet = true;
+					objProperties[i].magnet = false;
+					magnetBoost=setInterval(function (){
+						PlayerMagnet=false;
+						clearInterval (magnetBoost);}, 5000);
+				
+				
+				}
+				objProperties.splice(i, 1);
+				//scoreLabel.innerHTML = score;
 			}
 		}
 	}
@@ -208,7 +222,7 @@ function start () {
 	renderer.setSize (ww,hh);
 	document.getElementById("holst").append(renderer.domElement);
 	camera.position.x = 0 ;
-	camera.position.y =900;
+	camera.position.y =300;
 	camera.position.z =0;
 	camera.rotation.x = - Math.PI/2;
 	camera.rotation.y =0;
