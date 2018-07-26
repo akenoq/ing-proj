@@ -64,6 +64,7 @@ if ((dx<=(4*Math.abs(rot-1)+50*rot+size)) && (dz<=(50*Math.abs(rot-1)+4*rot)+siz
 				objProperties.splice (i,1);
 				t--;
 				i--;
+				console.log (objProperties.length, obj.length, 67);
 			}
 		}
 		
@@ -71,6 +72,7 @@ if ((dx<=(4*Math.abs(rot-1)+50*rot+size)) && (dz<=(50*Math.abs(rot-1)+4*rot)+siz
 			let xx = getRandomNumber (PlayerPos.x-300, PlayerPos.x+300);
 			let zz = getRandomNumber (PlayerPos.z-300, PlayerPos.z+300);
 			createCube (6, xx, zz, false);
+			console.log (objProperties.length, obj.length, 75);
 		}
 	}
 	
@@ -178,18 +180,14 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	let magnetBoost;
 	let score =100;
 		function Score() {
-		let t = obj.length;
+		let t = objProperties.length;
 		let PlayerPos = obj[0].position;
-		for (let i = 1; i<t; i++){
-			let CubePos = obj[i].position;
+		for (let i = 0; i<t; i++){
+			let CubePos = obj[i+1].position;
 			let dx = Math.abs(PlayerPos.x-CubePos.x);
 			let dz = Math.abs(PlayerPos.z-CubePos.z);
 			if (dx<13 && dz<13){
-				scene.remove (obj[i]);
-				obj.splice (i, 1);
-				t--;
-				i--;
-				console.log (objProperties[i]);
+				
 				score+=objProperties[i].score;
 				if (objProperties[i].speed) {
 					PlayerSpeed = 5;
@@ -211,7 +209,12 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				
 				
 				}}
+				console.log (objProperties[i]);
 				objProperties.splice(i, 1);
+				scene.remove (obj[i+1]);
+				obj.splice (i+1, 1);
+				t--;
+				i--;
 				scoreLabel.innerHTML = score;
 			}
 		}
@@ -245,11 +248,11 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 			plane.position.z=tryposZ;
 		}
 		if (PlayerMagnet){
-			let t = obj.length;
+			let t = objProperties.length;
 			let PlayerPos = obj[0].position;
-			for (let i = 1; i<t; i++){
+			for (let i = 0; i<t; i++){
 				if (objProperties[i].magnet === false && objProperties[i].speed===false){
-					let CubePos = obj[i].position;
+					let CubePos = obj[i+1].position;
 					let dx = PlayerPos.x-CubePos.x;
 					let dz = PlayerPos.z-CubePos.z;
 					let dc = Math.sqrt (dx*dx+dz*dz);
