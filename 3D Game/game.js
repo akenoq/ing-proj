@@ -150,7 +150,9 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	}
 	
 	function frameLogic () {
-		MovePlayer ();
+		for (let i=0; i<PlayerSpeed; i++){
+			MovePlayer ();
+		}
 		cameraFollow ();
 		Population();
 		Score ();
@@ -174,7 +176,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		camera.rotation.z = 3*Math.PI/2;
 	}
 	
-	let PlayerSpeed =1;
+	let PlayerSpeed =2;
 	let speedBoost;
 	let PlayerMagnet = false;
 	let magnetBoost;
@@ -223,28 +225,26 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 	function MovePlayer () {
 		let tryposX = obj[0].position.x;
 		let tryposZ = obj[0].position.z;
+		let p = tryposX;
 		if(w) {
-            tryposX+=PlayerSpeed;
+            tryposX+=1;
         }
         if(s) {
-            tryposX-=PlayerSpeed;
+            tryposX-=1;
         }
 		if	(TryTo (tryposX, tryposZ, 10)) {
 			obj[0].position.x=tryposX;
-			obj[0].position.z=tryposZ;
 			plane.position.x=tryposX;
-			plane.position.z=tryposZ;
 		}
+		tryposX=p;
 		if(a) {
-			tryposZ-=PlayerSpeed;
+			tryposZ-=1;
         }
         if(d) {
-			tryposZ+= PlayerSpeed;
+			tryposZ+= 1;
         }
 		if	(TryTo (tryposX, tryposZ, 10)) {
-			obj[0].position.x=tryposX;
 			obj[0].position.z=tryposZ;
-			plane.position.x=tryposX;
 			plane.position.z=tryposZ;
 		}
 		if (PlayerMagnet){
