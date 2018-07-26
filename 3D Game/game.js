@@ -35,21 +35,21 @@ let renderer = new THREE.WebGLRenderer ();
 		walls.push (wall);
 	}
 	
-	function TryTo (xx, zz){
+	function TryTo (xx, zz, size){
 		let t = walls.length;
 		for (let i = 0; i<t ; i++){
 			let rot =parseInt(walls[i].rotation.y/(Math.PI/2));
 			
 			let dx = Math.abs(xx-walls[i].position.x);
 			let dz = Math.abs(zz-walls[i].position.z);
-if ((dx<=(4*Math.abs(rot-1)+50*rot+10)) && (dz<=(50*Math.abs(rot-1)+4*rot)+10)){
+if ((dx<=(4*Math.abs(rot-1)+50*rot+size-1)) && (dz<=(50*Math.abs(rot-1)+4*rot)+size-1)){
 				return false;
 			}	
 		}
 		return true;
 	}
 	
-	let EnemyOnMap =4;
+	let EnemyOnMap =40;
 	let ViewDistance =400;
 	function Population () {
 		let t = obj.length;
@@ -100,10 +100,12 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		cube.position.x = xx;
 		cube.position.y = hh/2;
 		cube.position.z = zz;
-		scene.add (cube);
-		if (d === false){
-		objProperties.push(bon);}
-		obj.push (cube);
+		if (TryTo(xx, zz, 3)){
+			scene.add (cube);
+			if (d === false){
+			objProperties.push(bon);}
+			obj.push (cube);
+		}
 	}
 	
 	let a = false;
@@ -222,7 +224,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
         if(s) {
             tryposX-=PlayerSpeed;
         }
-		if	(TryTo (tryposX, tryposZ)) {
+		if	(TryTo (tryposX, tryposZ, 10)) {
 			obj[0].position.x=tryposX;
 			obj[0].position.z=tryposZ;
 			plane.position.x=tryposX;
@@ -234,7 +236,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
         if(d) {
 			tryposZ+= PlayerSpeed;
         }
-		if	(TryTo (tryposX, tryposZ)) {
+		if	(TryTo (tryposX, tryposZ, 10)) {
 			obj[0].position.x=tryposX;
 			obj[0].position.z=tryposZ;
 			plane.position.x=tryposX;
@@ -248,7 +250,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				let dx = PlayerPos.x-CubePos.x;
 				let dz = PlayerPos.z-CubePos.z;
 				let dc = Math.sqrt (dx*dx+dz*dz);
-				CubePos.x += parseInt(dx*2/dc);
+				CubePos.x += parseInt(dx*3/dc);
 				CubePos.z += parseInt(dz*3/dc);
 			}
 		}
