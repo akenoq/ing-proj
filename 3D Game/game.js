@@ -194,6 +194,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				if (objProperties[i].speed) {
 					PlayerSpeed = 5;
 					objProperties[i].speed = false;
+					clearInterval (speedBoost);
 					speedBoost=setInterval(function (){
 						PlayerSpeed=3;
 						clearInterval (speedBoost);}, 5000);
@@ -203,6 +204,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 				if (objProperties[i].magnet) {
 					PlayerMagnet = true;
 					objProperties[i].magnet = false;
+					clearInterval (magnetBoost);
 					magnetBoost=setInterval(function (){
 						PlayerMagnet=false;
 						clearInterval (magnetBoost);}, 5000);
@@ -246,20 +248,22 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 			let t = obj.length;
 			let PlayerPos = obj[0].position;
 			for (let i = 1; i<t; i++){
-				let CubePos = obj[i].position;
-				let dx = PlayerPos.x-CubePos.x;
-				let dz = PlayerPos.z-CubePos.z;
-				let dc = Math.sqrt (dx*dx+dz*dz);
-				let tx = CubePos.x;
-				let tz = CubePos.z;
-				tx += parseInt (dx*3/dc);
-				if (TryTo (tx,tz, 3)){
-					CubePos.x = tx;
-				}
-				tx -= parseInt (dx*3/dc);
-				tz += parseInt (dz*3/dc);
-				if (TryTo (tx,tz, 3)){
-					CubePos.z = tz;
+				if (objProperties[i].magnet === false && objProperties[i].speed===false){
+					let CubePos = obj[i].position;
+					let dx = PlayerPos.x-CubePos.x;
+					let dz = PlayerPos.z-CubePos.z;
+					let dc = Math.sqrt (dx*dx+dz*dz);
+					let tx = CubePos.x;
+					let tz = CubePos.z;
+					tx += parseInt (dx*3/dc);
+					if (TryTo (tx,tz, 3)){
+						CubePos.x = tx;
+					}
+					tx -= parseInt (dx*3/dc);
+					tz += parseInt (dz*3/dc);
+					if (TryTo (tx,tz, 3)){
+						CubePos.z = tz;
+					}
 				}
 			}
 		}
