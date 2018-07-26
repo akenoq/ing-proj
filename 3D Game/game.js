@@ -103,6 +103,7 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		MovePlayer ();
 		cameraFollow ();
 		Population();
+		Score ();
 	}
 	
 	let timerDrawer;
@@ -119,6 +120,26 @@ function createCube (hh=20, xx=0, zz=0, d=true){
 		}
 		camera.lookAt (obj[0].position);
 		camera.rotation.z = 3*Math.PI/2;
+	}
+	
+	
+	let score =100;
+		function Score() {
+		let t = obj.length;
+		let PlayerPos = obj[0].position;
+		for (let i = 1; i<t; i++){
+			let CubePos = obj[i].position;
+			let dx = Math.abs(PlayerPos.x-CubePos.x);
+			let dz = Math.abs(PlayerPos.z-CubePos.z);
+			if (dx<13 && dz<13){
+				scene.remove (obj[i]);
+				obj.splice (i, 1);
+				t--;
+				i--;
+				score+=2;
+				scoreEdit.innerHTML = score;
+			}
+		}
 	}
 	
 	function MovePlayer () {
