@@ -18,6 +18,61 @@ window.addEventListener("load", function () {
 		return arr[number];
 	}
 	
+	let finishSpot;
+	
+	function createFinish () {
+			let finishGeometry = new THREE.PlaneGeometry (60, 60,1 , 10);
+			let finishMaterial = new THREE.MeshLambertMaterial ({color: 0x111111});
+			finishSpot =new THREE.Mesh(finishGeometry, finishMaterial);
+			let zz = getRandomNumber(0,200);
+			let xx = getRandomNumber(0,200);
+			finishSpot.rotation.x = -Math.PI/2;
+			finishSpot.position.x = xx;
+			finishSpot.position.y= 1;
+			finishSpot.position.z= zz;
+			finishSpot.receiveShadow = true;
+			scene.add (finishSpot);
+	}
+	
+	let gameEnd = false;
+	let pause = true;
+	function Finish () {
+		let dx = Math.abs (obj[0].position.x-finishSpot.position.x);
+		let dz = Math.abs (obj[0].position.z-finishSpot.position.z);
+		if (dx<20 && dz<20) {
+			gameEnd = true;
+			scoreLabel.innerHTML="Безопасная зона достигнута. Твой счет "+ score;
+		}
+	}
+	
+	let pauseBtn = document.getElementById ("pausebtn");
+	let startBtn = document.getElementById ("startbtn");
+	pauseBtn.innerHTML = "Начать";
+	pauseBtn.onclick = function (){
+		pause = !pause;
+		pauseBtn.innerHTML = "Пауза";
+		if (pause){
+			scoreLabel.innerHTML="Пауза";
+		} else {
+			scoreLabel.innerHTML=score;
+		}
+	}
+	startBtn.onclick = function () {
+		/*let gameEnd = false;
+		let pause = true;
+		pauseBtn.innerHTML = "Начать";
+		for (let i  =0; i<obj.length; i++){
+			scene.remove (obj[i]);
+		}
+		scene.remove(finishSpot);
+		obj=[];
+		objProperties=[];
+		createCube ();
+		start();
+		score = 100;*/
+		location.reload();
+	}
+	
 	let walls=[];
 	function createWall (xx=0, zz= 0, rot = 0) {
 		let wallColor = "#cccccc";
@@ -148,12 +203,15 @@ window.addEventListener("load", function () {
 	}
 	
 	function frameLogic () {
-		for (let i=0; i<PlayerSpeed; i++){
-			MovePlayer ();
+		if (gameEnd===false && pause===false){
+			for (let i=0; i<PlayerSpeed; i++){
+				MovePlayer ();
+			}
+			cameraFollow ();
+			Population();
+			Score ();
+			Finish();
 		}
-		cameraFollow ();
-		Population();
-		Score ();
 	}
 	
 	let timerDrawer;
@@ -282,14 +340,14 @@ window.addEventListener("load", function () {
 		renderer.setClearColor ("#67ddff");
 		renderer.setSize (ww,hh);
 		document.getElementById("holst").append(renderer.domElement);
-		camera.position.x = 0 ;
+		camera.position.x = 600 ;
 		camera.position.y =300;
-		camera.position.z =0;
+		camera.position.z =600;
 		camera.rotation.x = - Math.PI/2;
 		camera.rotation.y =0;
 		camera.rotation.z =3*Math.PI/2;
 		EnableLight ();
-		let planeGeometry = new THREE.PlaneGeometry (350, 400,1 , 10);
+		let planeGeometry = new THREE.PlaneGeometry (550, 600,1 , 10);
 		let planeMaterial = new THREE.MeshLambertMaterial ({color: 0x00ff00});
 		plane =new THREE.Mesh(planeGeometry, planeMaterial);
 		plane.rotation.x = -Math.PI/2;
@@ -298,6 +356,7 @@ window.addEventListener("load", function () {
 		plane.position.z= 0;
 		plane.receiveShadow = true;
 		scene.add (plane);
+		createFinish ();
 		timerDrawer = setInterval (frameDrawer, 20);
 		timerLogic = setInterval (frameLogic, 20);
 	}
